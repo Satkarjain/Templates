@@ -1,0 +1,99 @@
+#include <iostream>
+#include <string.h>
+#include <bits/stdc++.h>
+#include <ctype.h>
+#define eb emplace_back
+#define ll long long
+#define MP make_pair
+#define pb push_back
+#define f(i,c,d) for(int i=c;i<=d;i++)
+#define fr(i,k,m) for (int i=k;i>=m;i--)
+#define mp make_pair
+#define all(x) (x).begin(),(x).end()
+#define fi first
+#define se second
+#define fastIO  std::ios::sync_with_stdio(false);cin.tie(NULL)
+using namespace std;
+/*
+bool isPrime(ll int n) 
+{ 
+    // Corner case 
+    if (n <= 1) 
+        return false; 
+  
+    // Check from 2 to n-1 
+    for (ll int i = 2; i <= sqrt(n); i++) 
+        if (n % i == 0) 
+            return false; 
+  
+    return true; 
+}
+*/
+int seg[70001];
+    void make_segmenttree(vector<int> &nums, int t, int l,int r)
+    {
+        if(l == r)
+        {
+            seg[t] = nums[l];
+            return;
+        }
+        
+        int m = l+(r-l)/2;
+        
+        make_segmenttree(nums, 2*t+1,l,m);
+        make_segmenttree(nums, 2*t+2,m+1,r);
+        
+        seg[t] = seg[2*t+1] + seg[2*t+2];
+        return;
+    }
+    
+    int querytree(int t, int ql, int qr, int low, int high)
+    {
+        if(low>=ql and qr>=high)
+            return seg[t];
+        
+        if(qr< low || ql> high)
+            return 0;
+        
+        int m = low+(high-low)/2;
+        
+        int a = querytree(2*t+1,ql,qr,low,m);
+        int b = querytree(2*t+2,ql,qr,m+1,high);
+        
+        return a+b;
+    }
+    
+    void update(int t, int l, int r, int idx)
+    {
+        if( l == r)
+        {
+            seg[t]--;
+            return;
+        }
+        
+        int m = l+(r-l)/2;
+        
+        if(l<=idx and idx<=m)
+        {
+            update(2*t+1, l,m, idx);
+        }
+        
+        else
+        {
+            update(2*t+2, m+1,r, idx);
+        }
+        
+        seg[t] = seg[2*t+1]+seg[2*t+2];
+        return;
+    }
+    
+
+int main()
+{
+
+//make_segmenttree(a,t,l,r)
+
+ //int q = querytree(0,0,nums[x]-1, 0, 20000);
+  // update(0,0,20000,nums[x]);
+
+}
